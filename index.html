@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share ID PSN Mabar</title>
+    <title>P3Games - Share ID PSN Mabar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -16,253 +16,42 @@
             --text-dark: #1e293b;
             --text-muted: #64748b;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            transition: all 0.5s ease;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: var(--pure-white);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            border: 2px solid rgba(220, 38, 38, 0.1);
-            transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Mode Full Screen setelah input */
-        .container.full-view {
-            max-width: 800px;
-        }
-
-        /* Header Tema Merah Putih */
-        .header {
-            background: linear-gradient(135deg, var(--primary-red), #ef4444);
-            color: var(--pure-white);
-            padding: 30px 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-
-        /* Form Input */
-        .form-section {
-            padding: 25px 20px;
-            background: var(--pure-white);
-            border-bottom: 2px solid var(--bg-light);
-            transition: all 0.5s ease;
-            max-height: 300px;
-            opacity: 1;
-            overflow: hidden;
-        }
-
-        /* Kelas untuk menyembunyikan form secara halus */
-        .form-section.hide-form {
-            max-height: 0;
-            padding: 0 20px;
-            border-bottom: none;
-            opacity: 0;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            transition: color 0.3s ease;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            outline: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary-red);
-        }
-
-        .input-group input:focus + i {
-            color: var(--primary-red);
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-red);
-            color: var(--pure-white);
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
-        }
-
-        button:hover {
-            background: var(--hover-red);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(220, 38, 38, 0.3);
-        }
-
-        /* Daftar Username */
-        .list-section {
-            padding: 25px 20px;
-            max-height: 500px;
-            overflow-y: auto;
-            transition: max-height 0.5s ease;
-        }
-
-        .container.full-view .list-section {
-            max-height: 70vh;
-        }
-
-        .list-section h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .list-section h2 span {
-            background: var(--primary-red);
-            color: var(--pure-white);
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-
-        /* Grid Responsif saat layar melebar */
-        #playerList {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            transition: all 0.5s ease;
-        }
-
-        .container.full-view #playerList {
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-
-        .user-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background: var(--bg-light);
-            border-left: 4px solid var(--primary-red);
-            border-radius: 8px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.4s ease forwards;
-            transition: all 0.3s ease;
-        }
-
-        .user-card:hover {
-            transform: scale(1.03);
-            background: #fff5f5;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            overflow: hidden;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--text-dark);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .psn-id {
-            font-size: 13px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .psn-id i {
-            color: #003087;
-        }
-
-        /* Layar Maintenance */
-        .maintenance-view {
-            text-align: center;
-            padding: 50px 20px;
-        }
-        .maintenance-view i {
-            font-size: 60px;
-            color: var(--primary-red);
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .list-section::-webkit-scrollbar { width: 6px; }
-        .list-section::-webkit-scrollbar-track { background: var(--bg-light); }
-        .list-section::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: all 0.5s ease; }
+        .container { width: 100%; max-width: 500px; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; border: 2px solid rgba(220, 38, 38, 0.1); transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .container.full-view { max-width: 800px; }
+        .header { background: linear-gradient(135deg, var(--primary-red), #ef4444); color: var(--pure-white); padding: 30px 20px; text-align: center; }
+        .header h1 { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
+        .header p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        .form-section { padding: 25px 20px; background: var(--pure-white); border-bottom: 2px solid var(--bg-light); transition: all 0.5s ease; max-height: 300px; opacity: 1; overflow: hidden; }
+        .form-section.hide-form { max-height: 0; padding: 0 20px; border-bottom: none; opacity: 0; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); transition: color 0.3s ease; }
+        .input-group input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; transition: all 0.3s ease; }
+        .input-group input:focus { border-color: var(--primary-red); }
+        .input-group input:focus + i { color: var(--primary-red); }
+        button { width: 100%; padding: 12px; background: var(--primary-red); color: var(--pure-white); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        button:hover { background: var(--hover-red); transform: translateY(-2px); }
+        .list-section { padding: 25px 20px; max-height: 500px; overflow-y: auto; transition: max-height 0.5s ease; }
+        .container.full-view .list-section { max-height: 70vh; }
+        .list-section h2 { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .list-section h2 span { background: var(--primary-red); color: var(--pure-white); font-size: 12px; padding: 2px 8px; border-radius: 12px; }
+        #playerList { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .container.full-view #playerList { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+        .user-card { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--bg-light); border-left: 4px solid var(--primary-red); border-radius: 8px; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.4s ease forwards; transition: all 0.3s ease; }
+        .user-card:hover { transform: scale(1.03); background: #fff5f5; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08); }
+        .user-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+        .user-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+        
+        /* Badge Tag Style di Client */
+        .user-tag { font-size: 10px; padding: 2px 6px; color: white; border-radius: 10px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; }
+        
+        .psn-id { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+        .psn-id i { color: #003087; }
+        .maintenance-view { text-align: center; padding: 50px 20px; }
+        .maintenance-view i { font-size: 60px; color: var(--primary-red); margin-bottom: 20px; animation: pulse 2s infinite; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     </style>
 </head>
 <body>
@@ -273,7 +62,6 @@
                 <h1><i class="fa-solid fa-gamepad"></i> P3GAMES</h1>
                 <p id="headerDesc">Share ID PSN Kamu & Cari Teman Mabar!</p>
             </div>
-
             <div class="form-section" id="formContainer">
                 <form id="mabarForm">
                     <div class="input-group">
@@ -284,16 +72,12 @@
                         <input type="text" id="psnId" placeholder="ID / Username PSN" required maxlength="30">
                         <i class="fa-brands fa-playstation"></i>
                     </div>
-                    <button type="submit" id="btnSubmit">
-                        <i class="fa-solid fa-paper-plane"></i> Bagikan ID
-                    </button>
+                    <button type="submit" id="btnSubmit"><i class="fa-solid fa-paper-plane"></i> Bagikan ID</button>
                 </form>
             </div>
-
             <div class="list-section">
                 <h2>Daftar Player <span id="totalPlayer">0</span></h2>
-                <div id="playerList">
-                    </div>
+                <div id="playerList"></div>
             </div>
         </div>
     </div>
@@ -302,7 +86,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDdqcklee7hmqdR2PrMUsxR1M9UD9K5YKQ",
             authDomain: "p3games.firebaseapp.com",
@@ -311,11 +94,9 @@
             appId: "1:695625303781:web:31e4e065ff28f58e28b60c"
         };
 
-        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const playersRef = database.ref('players');
-        const bannedRef = database.ref('banned_users');
         const systemRef = database.ref('system_status');
 
         const mabarForm = document.getElementById('mabarForm');
@@ -323,129 +104,110 @@
         const totalPlayer = document.getElementById('totalPlayer');
         const mainContainer = document.getElementById('mainContainer');
         const formContainer = document.getElementById('formContainer');
-        const headerDesc = document.getElementById('headerDesc');
         const pageContent = document.getElementById('pageContent');
 
-        // Cek LocalStorage awal
-        if (localStorage.getItem('hasSubmittedPSN')) {
-            activateFullView();
-        }
-
+        if (localStorage.getItem('hasSubmittedPSN')) { activateFullView(); }
         function activateFullView() {
             if(formContainer) formContainer.classList.add('hide-form');
             mainContainer.classList.add('full-view');
-            if(headerDesc) headerDesc.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#4ade80"></i> Kamu sudah terdaftar! Selamat mencari teman mabar.';
         }
 
-        // 1. CEK STATUS MAINTENANCE SECARA REAL-TIME DARI PANEL ADMIN
         systemRef.child('maintenance').on('value', (snapshot) => {
             if (snapshot.exists() && snapshot.val() === true) {
-                // Ganti isi web jadi halaman maintenance murni
                 mainContainer.className = "container";
-                pageContent.innerHTML = `
-                    <div class="maintenance-view">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                        <h2 style="margin-bottom:10px;">Website Maintenance</h2>
-                        <p style="color:var(--text-muted); font-size:14px;">Sedang dalam perbaikan. Coba chat Akbar!</p>
-                    </div>
-                `;
-            } else {
-                // Jika maintenance OFF, muat ulang halaman biar balik normal
-                if (!document.getElementById('mabarForm') && !localStorage.getItem('hasSubmittedPSN')) {
-                    location.reload();
-                }
+                pageContent.innerHTML = `<div class="maintenance-view"><i class="fa-solid fa-screwdriver-wrench"></i><h2>Website Maintenance</h2><p style="color:var(--text-muted); font-size:14px;">P3GAMES sedang dalam perbaikan komponen mabar. Coba cek nanti ya, Cok!</p></div>`;
             }
         });
 
-        // 2. PROSES SIMPAN / UPDATE + ANTI BANNED CHECK
         if (mabarForm) {
             mabarForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-
                 const namaInput = document.getElementById('nama').value.trim();
                 const psnIdInput = document.getElementById('psnId').value.trim();
                 const btnSubmit = document.getElementById('btnSubmit');
 
-                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+                btnSubmit.innerHTML = 'Memproses...';
                 btnSubmit.disabled = true;
 
-                // Cek apakah ID PSN ini ada di daftar Banned sebelum disimpan
-                bannedRef.once('value', (bannedSnapshot) => {
+                // Cek status ban berdasarkan ID PSN global
+                playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
                     let isBanned = false;
-                    if (bannedSnapshot.exists()) {
-                        const bannedData = bannedSnapshot.val();
-                        isBanned = Object.values(bannedData).includes(psnIdInput);
+                    let existingKey = null;
+
+                    if(snapshot.exists()){
+                        const match = snapshot.val();
+                        existingKey = Object.keys(match)[0];
+                        if(match[existingKey].status === 'banned') isBanned = true;
                     }
 
-                    if (isBanned) {
-                        alert("ID PSN kamu telah dibanned oleh admin! Gak bisa share lagi, Cok.");
-                        mabarForm.reset();
-                        btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan ID';
-                        btnSubmit.disabled = false;
+                    if(isBanned) {
+                        alert("ID PSN kamu di-banned admin! Tidak bisa submit, Cok.");
+                        btnSubmit.innerHTML = 'Bagikan ID'; btnSubmit.disabled = false;
+                    } else if (existingKey) {
+                        // Update Data Tanpa Hapus Pangkat/Tag
+                        database.ref('players/' + existingKey).update({
+                            nama: namaInput,
+                            status: 'active',
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        }).then(() => handleSuccess());
                     } else {
-                        // JIKA AMAN: Lanjut cek duplikat & simpan
-                        playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
-                            if (snapshot.exists()) {
-                                let keyToUpdate = Object.keys(snapshot.val())[0];
-                                database.ref('players/' + keyToUpdate).update({
-                                    nama: namaInput,
-                                    timestamp: firebase.database.ServerValue.TIMESTAMP
-                                }).then(() => handleSuccess());
-                            } else {
-                                playersRef.push({
-                                    nama: namaInput,
-                                    psnId: psnIdInput,
-                                    timestamp: firebase.database.ServerValue.TIMESTAMP
-                                }).then(() => handleSuccess());
-                            }
-                        });
+                        // Data Baru
+                        playersRef.push({
+                            nama: namaInput,
+                            psnId: psnIdInput,
+                            status: 'active',
+                            tag: { name: 'Member', icon: 'fa-user', color: '#64748b' },
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        }).then(() => handleSuccess());
                     }
                 });
 
                 function handleSuccess() {
-                    mabarForm.reset();
                     localStorage.setItem('hasSubmittedPSN', 'true');
                     activateFullView();
                 }
             });
         }
 
-        // 3. AMBIL DATA PLAYER REAL-TIME
+        // AMBIL DATA REAL-TIME (HANYA MUNCULKAN STATUS ACTIVE)
         playersRef.on('value', (snapshot) => {
-            // Cek ulang jika elemen list dihancurkan oleh layar maintenance
             if (!document.getElementById('playerList')) return;
-            
             playerList.innerHTML = '';
             
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                const orderedList = Object.keys(data).map(key => data[key]).sort((a, b) => b.timestamp - a.timestamp);
+                const activeList = Object.keys(data)
+                    .map(key => data[key])
+                    .filter(p => p.status !== 'banned')
+                    .sort((a, b) => b.timestamp - a.timestamp);
                 
-                totalPlayer.innerText = orderedList.length;
+                totalPlayer.innerText = activeList.length;
 
-                orderedList.forEach((player, index) => {
+                activeList.forEach((player, index) => {
                     const card = document.createElement('div');
                     card.classList.add('user-card');
                     card.style.animationDelay = `${index * 0.03}s`;
 
+                    let tagHtml = '';
+                    if(player.tag) {
+                        tagHtml = `<span class="user-tag" style="background:${player.tag.color}"><i class="fa-solid ${player.tag.icon}"></i> ${escapeHTML(player.tag.name)}</span>`;
+                    }
+
                     card.innerHTML = `
                         <div class="user-info">
-                            <span class="user-name">${escapeHTML(player.nama)}</span>
+                            <span class="user-name">${escapeHTML(player.nama)} ${tagHtml}</span>
                             <span class="psn-id"><i class="fa-brands fa-playstation"></i> ${escapeHTML(player.psnId)}</span>
                         </div>
-                        <i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.7;"></i>
+                        <i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.4;"></i>
                     `;
                     playerList.appendChild(card);
                 });
             } else {
                 totalPlayer.innerText = '0';
-                playerList.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 20px;">Belum ada player. Jadi yang pertama!</p>';
             }
         });
 
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-        }
+        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
     </script>
 </body>
 </html>
