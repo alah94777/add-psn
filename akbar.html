@@ -20,11 +20,25 @@
         body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; min-height: 100vh; }
         .admin-container { width: 100%; max-width: 1000px; margin: 0 auto; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 2px solid rgba(220, 38, 38, 0.1); overflow: hidden; }
         .header { background: linear-gradient(135deg, #1e293b, #0f172a); color: var(--pure-white); padding: 25px; text-align: center; }
-        .control-box { padding: 20px; background: #f1f5f9; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; }
+        
+        /* Control Panel & Form Tambah Player */
+        .control-box { padding: 20px; background: #f1f5f9; display: flex; flex-direction: column; gap: 15px; border-bottom: 2px solid #e2e8f0; }
+        @media(min-width: 768px) { .control-box { flex-direction: row; justify-content: space-between; align-items: center; } }
+        
         .toggle-btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: white; transition: 0.3s; }
         .btn-off { background: #cbd5e1; color: #1e293b; }
         .btn-on { background: var(--primary-red); }
-        .content-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 20px; }
+
+        /* Form Tambah Player Style */
+        .add-player-section { background: #ffffff; padding: 20px; margin: 20px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+        @media(min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr auto; } }
+        .form-grid input { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none; }
+        .form-grid input:focus { border-color: var(--primary-red); }
+        .btn-add-submit { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .btn-add-submit:hover { background: #059669; }
+
+        .content-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 0 20px 20px 20px; }
         @media(min-width: 900px) { .content-grid { grid-template-columns: 2fr 1fr; } }
         .section-title { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .table-wrapper { overflow-x: auto; background: white; border: 1px solid #e2e8f0; border-radius: 8px; }
@@ -61,6 +75,21 @@
                 <p style="font-size: 12px; color: var(--text-muted);">Aktifkan untuk menutup akses form mabar depan.</p>
             </div>
             <button id="maintenanceBtn" class="toggle-btn btn-off" onclick="toggleMaintenance()">OFF</button>
+        </div>
+
+        <div class="add-player-section">
+            <h3 style="font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-user-plus" style="color:#10b981"></i> Tambah / Daftarkan Player Manual
+            </h3>
+            <form id="adminAddPlayerForm">
+                <div class="form-grid">
+                    <input type="text" id="adminInputNama" placeholder="Nama Player" required maxlength="20">
+                    <input type="text" id="adminInputPsn" placeholder="ID / Username PSN" required maxlength="30">
+                    <button type="submit" class="btn-add-submit">
+                        <i class="fa-solid fa-plus"></i> Tambah Data
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="content-grid">
@@ -140,6 +169,7 @@
 
         let isMaintenanceActive = false;
 
+        // STATUS MAINTENANCE METER
         systemRef.child('maintenance').on('value', (snapshot) => {
             const btn = document.getElementById('maintenanceBtn');
             isMaintenanceActive = snapshot.exists() && snapshot.val() === true;
@@ -149,7 +179,43 @@
 
         function toggleMaintenance() { systemRef.update({ maintenance: !isMaintenanceActive }); }
 
-        // MERENDER PLAYER AKTIF & BANNED SECARA TERPISAH
+        // LOGIKA BARU: AKSI TAMBAH PLAYER SECARA MANUAL OLEH ADMIN
+        document.getElementById('adminAddPlayerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const namaInput = document.getElementById('adminInputNama').value.trim();
+            const psnIdInput = document.getElementById('adminInputPsn').value.trim();
+
+            // Cek duplikasi ID PSN terlebih dahulu agar tertata rapi
+            playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    // Jika data sudah ada, lakukan update nama dan aktifkan statusnya kembali
+                    let keyToUpdate = Object.keys(snapshot.val())[0];
+                    playersRef.child(keyToUpdate).update({
+                        nama: namaInput,
+                        status: 'active',
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        alert("ID PSN sudah terdaftar sebelumnya, data berhasil diperbarui oleh Admin!");
+                        document.getElementById('adminAddPlayerForm').reset();
+                    });
+                } else {
+                    // Jika benar-benar baru, tambahkan ke database
+                    playersRef.push({
+                        nama: namaInput,
+                        psnId: psnIdInput,
+                        status: 'active',
+                        tag: { name: 'Member', icon: 'fa-user', color: '#64748b' },
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        alert("Player berhasil ditambahkan secara manual!");
+                        document.getElementById('adminAddPlayerForm').reset();
+                    });
+                }
+            });
+        });
+
+        // MERENDER PLAYER AKTIF & BANNED
         playersRef.on('value', (snapshot) => {
             const tbody = document.getElementById('adminPlayerList');
             const bannedDiv = document.getElementById('adminBannedList');
@@ -164,7 +230,6 @@
                 Object.keys(data).forEach((key) => {
                     const player = data[key];
                     
-                    // Badge Generator Logika
                     let tagHtml = `<span class="badge" style="background:#64748b"><i class="fa-solid fa-user"></i> Member</span>`;
                     if(player.tag) {
                         tagHtml = `<span class="badge" style="background:${player.tag.color}"><i class="fa-solid ${player.tag.icon}"></i> ${escapeHTML(player.tag.name)}</span>`;
