@@ -32,9 +32,383 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            transition: all 0.5s ease;
         }
 
         .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--pure-white);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 2px solid rgba(220, 38, 38, 0.1);
+            transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Mode Full Screen setelah input */
+        .container.full-view {
+            max-width: 800px;
+        }
+
+        /* Header Tema Merah Putih */
+        .header {
+            background: linear-gradient(135deg, var(--primary-red), #ef4444);
+            color: var(--pure-white);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Form Input */
+        .form-section {
+            padding: 25px 20px;
+            background: var(--pure-white);
+            border-bottom: 2px solid var(--bg-light);
+            transition: all 0.5s ease;
+            max-height: 300px;
+            opacity: 1;
+            overflow: hidden;
+        }
+
+        /* Kelas untuk menyembunyikan form secara halus */
+        .form-section.hide-form {
+            max-height: 0;
+            padding: 0 20px;
+            border-bottom: none;
+            opacity: 0;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-red);
+        }
+
+        .input-group input:focus + i {
+            color: var(--primary-red);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-red);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
+
+        button:hover {
+            background: var(--hover-red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        /* Daftar Username */
+        .list-section {
+            padding: 25px 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            transition: max-height 0.5s ease;
+        }
+
+        .container.full-view .list-section {
+            max-height: 70vh;
+        }
+
+        .list-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .list-section h2 span {
+            background: var(--primary-red);
+            color: var(--pure-white);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* Grid Responsif saat layar melebar */
+        #playerList {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            transition: all 0.5s ease;
+        }
+
+        .container.full-view #playerList {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--bg-light);
+            border-left: 4px solid var(--primary-red);
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.4s ease forwards;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: scale(1.03);
+            background: #fff5f5;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .psn-id {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .psn-id i {
+            color: #003087;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .list-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .list-section::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        .list-section::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <div class="header">
+            <h1><i class="fa-solid fa-gamepad"></i> P3GAMES</h1>
+            <p id="headerDesc">Share ID PSN Kamu & Cari Teman Mabar!</p>
+        </div>
+
+        <div class="form-section" id="formContainer">
+            <form id="mabarForm">
+                <div class="input-group">
+                    <input type="text" id="nama" placeholder="Nama Kamu" required maxlength="20">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="psnId" placeholder="ID / Username PSN" required maxlength="30">
+                    <i class="fa-brands fa-playstation"></i>
+                </div>
+                <button type="submit" id="btnSubmit">
+                    <i class="fa-solid fa-paper-plane"></i> Bagikan ID
+                </button>
+            </form>
+        </div>
+
+        <div class="list-section">
+            <h2>Daftar Player <span id="totalPlayer">0</span></h2>
+            <div id="playerList">
+                </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Konfigurasi Firebase-mu
+        const firebaseConfig = {
+            apiKey: "AIzaSyDdqcklee7hmqdR2PrMUsxR1M9UD9K5YKQ",
+            authDomain: "p3games.firebaseapp.com",
+            databaseURL: "https://p3games-default-rtdb.firebaseio.com",
+            projectId: "p3games",
+            appId: "1:695625303781:web:31e4e065ff28f58e28b60c"
+        };
+
+        // Init Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const playersRef = database.ref('players');
+
+        const mabarForm = document.getElementById('mabarForm');
+        const playerList = document.getElementById('playerList');
+        const totalPlayer = document.getElementById('totalPlayer');
+        const mainContainer = document.getElementById('mainContainer');
+        const formContainer = document.getElementById('formContainer');
+        const headerDesc = document.getElementById('headerDesc');
+
+        // Cek LocalStorage apakah user ini sudah pernah submit sebelumnya
+        if (localStorage.getItem('hasSubmittedPSN')) {
+            activateFullView();
+        }
+
+        // Fungsi mengubah layout menjadi full screen / full view ringkas
+        function activateFullView() {
+            formContainer.classList.add('hide-form');
+            mainContainer.classList.add('full-view');
+            headerDesc.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#4ade80"></i> Kamu sudah terdaftar! Selamat mencari teman mabar.';
+        }
+
+        // 1. PROSES SIMPAN / UPDATE ANTI-DUPLIKAT
+        mabarForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const namaInput = document.getElementById('nama').value.trim();
+            const psnIdInput = document.getElementById('psnId').value.trim();
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+            btnSubmit.disabled = true;
+
+            // Cek dulu ke database apakah ID PSN ini sudah pernah ada
+            playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    // JIKA DUPLIKAT: Update nama pemilik lama dengan inputan yang baru
+                    let keyToUpdate = Object.keys(snapshot.val())[0];
+                    database.ref('players/' + keyToUpdate).update({
+                        nama: namaInput,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        handleSuccess();
+                    });
+                } else {
+                    // JIKA DATA BARU: Push data baru seperti biasa
+                    playersRef.push({
+                        nama: namaInput,
+                        psnId: psnIdInput,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        handleSuccess();
+                    });
+                }
+            });
+
+            function handleSuccess() {
+                mabarForm.reset();
+                // Tandai di browser user biar gak perlu input lagi saat balik ke web ini
+                localStorage.setItem('hasSubmittedPSN', 'true');
+                
+                // Triger animasi transisi ke mode full screen
+                activateFullView();
+            }
+        });
+
+        // 2. AMBIL DATA REAL-TIME & SUSUN GRID
+        playersRef.on('value', (snapshot) => {
+            playerList.innerHTML = '';
+            
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                // Mengurutkan dari yang paling baru diupdate/ditambahkan
+                const orderedList = Object.keys(data).map(key => data[key]).sort((a, b) => b.timestamp - a.timestamp);
+                
+                totalPlayer.innerText = orderedList.length;
+
+                orderedList.forEach((player, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('user-card');
+                    card.style.animationDelay = `${index * 0.03}s`;
+
+                    card.innerHTML = `
+                        <div class="user-info">
+                            <span class="user-name">${escapeHTML(player.nama)}</span>
+                            <span class="psn-id"><i class="fa-brands fa-playstation"></i> ${escapeHTML(player.psnId)}</span>
+                        </div>
+                        <i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.7;"></i>
+                    `;
+                    playerList.appendChild(card);
+                });
+            } else {
+                totalPlayer.innerText = '0';
+                playerList.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 20px;">Belum ada player. Jadi yang pertama!</p>';
+            }
+        });
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+    </html>        .container {
             width: 100%;
             max-width: 500px;
             background: var(--pure-white);
