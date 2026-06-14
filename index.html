@@ -239,53 +239,62 @@
             color: #003087;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Layar Maintenance */
+        .maintenance-view {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .maintenance-view i {
+            font-size: 60px;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
         }
 
-        .list-section::-webkit-scrollbar {
-            width: 6px;
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
         }
-        .list-section::-webkit-scrollbar-track {
-            background: var(--bg-light);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
-        .list-section::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
+
+        .list-section::-webkit-scrollbar { width: 6px; }
+        .list-section::-webkit-scrollbar-track { background: var(--bg-light); }
+        .list-section::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
     </style>
 </head>
 <body>
 
     <div class="container" id="mainContainer">
-        <div class="header">
-            <h1><i class="fa-solid fa-gamepad"></i> P3GAMES</h1>
-            <p id="headerDesc">Share ID PSN Kamu & Cari Teman Mabar!</p>
-        </div>
+        <div id="pageContent">
+            <div class="header">
+                <h1><i class="fa-solid fa-gamepad"></i> P3GAMES</h1>
+                <p id="headerDesc">Share ID PSN Kamu & Cari Teman Mabar!</p>
+            </div>
 
-        <div class="form-section" id="formContainer">
-            <form id="mabarForm">
-                <div class="input-group">
-                    <input type="text" id="nama" placeholder="Nama Kamu" required maxlength="20">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <div class="input-group">
-                    <input type="text" id="psnId" placeholder="ID / Username PSN" required maxlength="30">
-                    <i class="fa-brands fa-playstation"></i>
-                </div>
-                <button type="submit" id="btnSubmit">
-                    <i class="fa-solid fa-paper-plane"></i> Bagikan ID
-                </button>
-            </form>
-        </div>
+            <div class="form-section" id="formContainer">
+                <form id="mabarForm">
+                    <div class="input-group">
+                        <input type="text" id="nama" placeholder="Nama Kamu" required maxlength="20">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="psnId" placeholder="ID / Username PSN" required maxlength="30">
+                        <i class="fa-brands fa-playstation"></i>
+                    </div>
+                    <button type="submit" id="btnSubmit">
+                        <i class="fa-solid fa-paper-plane"></i> Bagikan ID
+                    </button>
+                </form>
+            </div>
 
-        <div class="list-section">
-            <h2>Daftar Player <span id="totalPlayer">0</span></h2>
-            <div id="playerList">
-                </div>
+            <div class="list-section">
+                <h2>Daftar Player <span id="totalPlayer">0</span></h2>
+                <div id="playerList">
+                    </div>
+            </div>
         </div>
     </div>
 
@@ -293,7 +302,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // Konfigurasi Firebase-mu
+        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDdqcklee7hmqdR2PrMUsxR1M9UD9K5YKQ",
             authDomain: "p3games.firebaseapp.com",
@@ -306,6 +315,8 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const playersRef = database.ref('players');
+        const bannedRef = database.ref('banned_users');
+        const systemRef = database.ref('system_status');
 
         const mabarForm = document.getElementById('mabarForm');
         const playerList = document.getElementById('playerList');
@@ -313,70 +324,101 @@
         const mainContainer = document.getElementById('mainContainer');
         const formContainer = document.getElementById('formContainer');
         const headerDesc = document.getElementById('headerDesc');
+        const pageContent = document.getElementById('pageContent');
 
-        // Cek LocalStorage apakah user ini sudah pernah submit sebelumnya
+        // Cek LocalStorage awal
         if (localStorage.getItem('hasSubmittedPSN')) {
             activateFullView();
         }
 
-        // Fungsi mengubah layout menjadi full screen / full view ringkas
         function activateFullView() {
-            formContainer.classList.add('hide-form');
+            if(formContainer) formContainer.classList.add('hide-form');
             mainContainer.classList.add('full-view');
-            headerDesc.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#4ade80"></i> Kamu sudah terdaftar! Selamat mencari teman mabar.';
+            if(headerDesc) headerDesc.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#4ade80"></i> Kamu sudah terdaftar! Selamat mencari teman mabar.';
         }
 
-        // 1. PROSES SIMPAN / UPDATE ANTI-DUPLIKAT
-        mabarForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const namaInput = document.getElementById('nama').value.trim();
-            const psnIdInput = document.getElementById('psnId').value.trim();
-            const btnSubmit = document.getElementById('btnSubmit');
-
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
-            btnSubmit.disabled = true;
-
-            // Cek dulu ke database apakah ID PSN ini sudah pernah ada
-            playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    // JIKA DUPLIKAT: Update nama pemilik lama dengan inputan yang baru
-                    let keyToUpdate = Object.keys(snapshot.val())[0];
-                    database.ref('players/' + keyToUpdate).update({
-                        nama: namaInput,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    }).then(() => {
-                        handleSuccess();
-                    });
-                } else {
-                    // JIKA DATA BARU: Push data baru seperti biasa
-                    playersRef.push({
-                        nama: namaInput,
-                        psnId: psnIdInput,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    }).then(() => {
-                        handleSuccess();
-                    });
+        // 1. CEK STATUS MAINTENANCE SECARA REAL-TIME DARI PANEL ADMIN
+        systemRef.child('maintenance').on('value', (snapshot) => {
+            if (snapshot.exists() && snapshot.val() === true) {
+                // Ganti isi web jadi halaman maintenance murni
+                mainContainer.className = "container";
+                pageContent.innerHTML = `
+                    <div class="maintenance-view">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <h2 style="margin-bottom:10px;">Website Maintenance</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">P3GAMES sedang dalam perbaikan komponen mabar. Coba cek lagi nanti ya, Cok!</p>
+                    </div>
+                `;
+            } else {
+                // Jika maintenance OFF, muat ulang halaman biar balik normal
+                if (!document.getElementById('mabarForm') && !localStorage.getItem('hasSubmittedPSN')) {
+                    location.reload();
                 }
-            });
-
-            function handleSuccess() {
-                mabarForm.reset();
-                // Tandai di browser user biar gak perlu input lagi saat balik ke web ini
-                localStorage.setItem('hasSubmittedPSN', 'true');
-                
-                // Triger animasi transisi ke mode full screen
-                activateFullView();
             }
         });
 
-        // 2. AMBIL DATA REAL-TIME & SUSUN GRID
+        // 2. PROSES SIMPAN / UPDATE + ANTI BANNED CHECK
+        if (mabarForm) {
+            mabarForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const namaInput = document.getElementById('nama').value.trim();
+                const psnIdInput = document.getElementById('psnId').value.trim();
+                const btnSubmit = document.getElementById('btnSubmit');
+
+                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+                btnSubmit.disabled = true;
+
+                // Cek apakah ID PSN ini ada di daftar Banned sebelum disimpan
+                bannedRef.once('value', (bannedSnapshot) => {
+                    let isBanned = false;
+                    if (bannedSnapshot.exists()) {
+                        const bannedData = bannedSnapshot.val();
+                        isBanned = Object.values(bannedData).includes(psnIdInput);
+                    }
+
+                    if (isBanned) {
+                        alert("ID PSN kamu telah dibanned oleh admin! Gak bisa share lagi, Cok.");
+                        mabarForm.reset();
+                        btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan ID';
+                        btnSubmit.disabled = false;
+                    } else {
+                        // JIKA AMAN: Lanjut cek duplikat & simpan
+                        playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
+                            if (snapshot.exists()) {
+                                let keyToUpdate = Object.keys(snapshot.val())[0];
+                                database.ref('players/' + keyToUpdate).update({
+                                    nama: namaInput,
+                                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                                }).then(() => handleSuccess());
+                            } else {
+                                playersRef.push({
+                                    nama: namaInput,
+                                    psnId: psnIdInput,
+                                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                                }).then(() => handleSuccess());
+                            }
+                        });
+                    }
+                });
+
+                function handleSuccess() {
+                    mabarForm.reset();
+                    localStorage.setItem('hasSubmittedPSN', 'true');
+                    activateFullView();
+                }
+            });
+        }
+
+        // 3. AMBIL DATA PLAYER REAL-TIME
         playersRef.on('value', (snapshot) => {
+            // Cek ulang jika elemen list dihancurkan oleh layar maintenance
+            if (!document.getElementById('playerList')) return;
+            
             playerList.innerHTML = '';
             
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                // Mengurutkan dari yang paling baru diupdate/ditambahkan
                 const orderedList = Object.keys(data).map(key => data[key]).sort((a, b) => b.timestamp - a.timestamp);
                 
                 totalPlayer.innerText = orderedList.length;
@@ -402,9 +444,7 @@
         });
 
         function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
         }
     </script>
 </body>
