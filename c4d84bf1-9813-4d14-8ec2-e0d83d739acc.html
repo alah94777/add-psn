@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P3Games - Share ID PSN Mabar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #dc2626;
+            --hover-red: #b91c1c;
+            --pure-white: #ffffff;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--pure-white);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 2px solid rgba(220, 38, 38, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        /* Header Tema Merah Putih */
+        .header {
+            background: linear-gradient(135deg, var(--primary-red), #ef4444);
+            color: var(--pure-white);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Form Input */
+        .form-section {
+            padding: 25px 20px;
+            background: var(--pure-white);
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-red);
+        }
+
+        .input-group input:focus + i {
+            color: var(--primary-red);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-red);
+            color: var(--pure-white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
+
+        button:hover {
+            background: var(--hover-red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Daftar Username */
+        .list-section {
+            padding: 25px 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .list-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .list-section h2 span {
+            background: var(--primary-red);
+            color: var(--pure-white);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--bg-light);
+            border-left: 4px solid var(--primary-red);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.4s ease forwards;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: scale(1.02);
+            background: #fff5f5;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.05);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .psn-id {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .psn-id i {
+            color: #003087; /* Warna khas PlayStation biar keren */
+        }
+
+        /* Animasi Smooth */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Kustomisasi Scrollbar */
+        .list-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .list-section::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        .list-section::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fa-solid fa-gamepad"></i> P3GAMES</h1>
+            <p>Share ID PSN Kamu & Cari Teman Mabar!</p>
+        </div>
+
+        <div class="form-section">
+            <form id="mabarForm">
+                <div class="input-group">
+                    <input type="text" id="nama" placeholder="Nama Kamu" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="psnId" placeholder="ID / Username PSN" required>
+                    <i class="fa-brands fa-playstation"></i>
+                </div>
+                <button type="submit" id="btnSubmit">
+                    <i class="fa-solid fa-paper-plane"></i> Bagikan ID
+                </button>
+            </form>
+        </div>
+
+        <div class="list-section">
+            <h2>Daftar Player <span id="totalPlayer">0</span></h2>
+            <div id="playerList">
+                </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Konfigurasi Firebase sesuai milikmu
+        const firebaseConfig = {
+            apiKey: "AIzaSyDdqcklee7hmqdR2PrMUsxR1M9UD9K5YKQ",
+            authDomain: "p3games.firebaseapp.com",
+            databaseURL: "https://p3games-default-rtdb.firebaseio.com",
+            projectId: "p3games",
+            appId: "1:695625303781:web:31e4e065ff28f58e28b60c"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const playersRef = database.ref('players');
+
+        const mabarForm = document.getElementById('mabarForm');
+        const playerList = document.getElementById('playerList');
+        const totalPlayer = document.getElementById('totalPlayer');
+
+        // 1. PROSES SIMPAN DATA (Ketik klik 'Bagikan ID')
+        mabarForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const namaInput = document.getElementById('nama').value.trim();
+            const psnIdInput = document.getElementById('psnId').value.trim();
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            // Ganti teks tombol biar kelihatan proses loading
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btnSubmit.disabled = true;
+
+            // Push data baru ke path 'players' di Firebase
+            playersRef.push({
+                nama: namaInput,
+                psnId: psnIdInput,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                // Reset Form jika berhasil
+                mabarForm.reset();
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan ID';
+                btnSubmit.disabled = false;
+            }).catch((error) => {
+                alert("Gagal menyimpan data: " + error.message);
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Bagikan ID';
+                btnSubmit.disabled = false;
+            });
+        });
+
+        // 2. PROSES AMBIL & MONITOR DATA SECARA REAL-TIME
+        playersRef.on('value', (snapshot) => {
+            playerList.innerHTML = ''; // Kosongkan list lama
+            
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                
+                // Mengubah object menjadi array dan mengurutkan berdasarkan yang terbaru dimasukkan
+                const orderedList = Object.keys(data).map(key => data[key]).reverse();
+                
+                totalPlayer.innerText = orderedList.length;
+
+                orderedList.forEach((player, index) => {
+                    // Membuat elemen card untuk tiap user
+                    const card = document.createElement('div');
+                    card.classList.add('user-card');
+                    // Mengatur jeda animasi stagger (efek masuk satu-satu secara smooth)
+                    card.style.animationDelay = `${index * 0.05}s`;
+
+                    card.innerHTML = `
+                        <div class="user-info">
+                            <span class="user-name">${escapeHTML(player.nama)}</span>
+                            <span class="psn-id"><i class="fa-brands fa-playstation"></i> ${escapeHTML(player.psnId)}</span>
+                        </div>
+                        <i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.7;"></i>
+                    `;
+                    playerList.appendChild(card);
+                });
+            } else {
+                totalPlayer.innerText = '0';
+                playerList.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 20px;">Belum ada player yang join. Jadi yang pertama!</p>';
+            }
+        });
+
+        // Fungsi tambahan untuk mencegah XSS injection (keamanan teks input)
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
