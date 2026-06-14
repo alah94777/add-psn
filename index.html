@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P3Games - Admin Panel</title>
+    <title>Share ID PSN Mabar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -17,135 +17,71 @@
             --text-muted: #64748b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; min-height: 100vh; }
-        .admin-container { width: 100%; max-width: 1000px; margin: 0 auto; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 2px solid rgba(220, 38, 38, 0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #1e293b, #0f172a); color: var(--pure-white); padding: 25px; text-align: center; }
+        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: all 0.5s ease; }
+        .container { width: 100%; max-width: 500px; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; border: 2px solid rgba(220, 38, 38, 0.1); transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .container.full-view { max-width: 800px; }
+        .header { background: linear-gradient(135deg, var(--primary-red), #ef4444); color: var(--pure-white); padding: 30px 20px; text-align: center; }
+        .header h1 { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
+        .header p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        .form-section { padding: 25px 20px; background: var(--pure-white); border-bottom: 2px solid var(--bg-light); transition: all 0.5s ease; max-height: 300px; opacity: 1; overflow: hidden; }
+        .form-section.hide-form { max-height: 0; padding: 0 20px; border-bottom: none; opacity: 0; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); transition: color 0.3s ease; }
+        .input-group input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; transition: all 0.3s ease; }
+        .input-group input:focus { border-color: var(--primary-red); }
+        .input-group input:focus + i { color: var(--primary-red); }
+        button { width: 100%; padding: 12px; background: var(--primary-red); color: var(--pure-white); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
+        button:hover { background: var(--hover-red); transform: translateY(-2px); }
+        .list-section { padding: 25px 20px; max-height: 500px; overflow-y: auto; transition: max-height 0.5s ease; }
+        .container.full-view .list-section { max-height: 70vh; }
+        .list-section h2 { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .list-section h2 span { background: var(--primary-red); color: var(--pure-white); font-size: 12px; padding: 2px 8px; border-radius: 12px; }
+        #playerList { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .container.full-view #playerList { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        .user-card { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--bg-light); border-left: 4px solid var(--primary-red); border-radius: 8px; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.4s ease forwards; transition: all 0.3s ease; }
+        .user-card:hover { transform: scale(1.03); background: #fff5f5; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08); }
+        .user-info { display: flex; flex-direction: column; gap: 6px; overflow: hidden; width: 100%; }
         
-        /* Control Panel & Form Tambah Player */
-        .control-box { padding: 20px; background: #f1f5f9; display: flex; flex-direction: column; gap: 15px; border-bottom: 2px solid #e2e8f0; }
-        @media(min-width: 768px) { .control-box { flex-direction: row; justify-content: space-between; align-items: center; } }
+        /* Nama dan Flex Layout untuk Role Badge */
+        .user-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; color: var(--text-dark); }
         
-        .toggle-btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: white; transition: 0.3s; }
-        .btn-off { background: #cbd5e1; color: #1e293b; }
-        .btn-on { background: var(--primary-red); }
-
-        /* Form Tambah Player Style */
-        .add-player-section { background: #ffffff; padding: 20px; margin: 20px; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-        @media(min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr auto; } }
-        .form-grid input { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none; }
-        .form-grid input:focus { border-color: var(--primary-red); }
-        .btn-add-submit { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
-        .btn-add-submit:hover { background: #059669; }
-
-        .content-grid { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 0 20px 20px 20px; }
-        @media(min-width: 900px) { .content-grid { grid-template-columns: 2fr 1fr; } }
-        .section-title { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .table-wrapper { overflow-x: auto; background: white; border: 1px solid #e2e8f0; border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-        th, td { padding: 12px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
-        th { background: #f8fafc; font-weight: 600; }
-        .badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; display: inline-flex; align-items: center; gap: 4px; }
-        .btn-action { padding: 6px 10px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; color: white; transition: 0.2s; margin: 2px; }
-        .btn-delete { background: #ef4444; }
-        .btn-banned { background: #f97316; }
-        .btn-unban { background: #10b981; }
-        .btn-tag { background: #3b82f6; }
-        .banned-box { background: #fff5f5; border: 1px solid #fee2e2; border-radius: 8px; padding: 15px; }
-        .banned-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #fca5a5; font-size: 13px; }
+        /* Desain Badge Role Nyala */
+        .user-tag { font-size: 10px; padding: 3px 8px; color: white; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-transform: uppercase; letter-spacing: 0.5px; }
         
-        /* Modal Style untuk Custom Tag */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 100; }
-        .modal-content { background: white; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .modal-content h3 { margin-bottom: 15px; font-size: 16px; }
-        .modal-content select, .modal-content input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+        .psn-id { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+        .psn-id i { color: #003087; }
+        .maintenance-view { text-align: center; padding: 50px 20px; }
+        .maintenance-view i { font-size: 60px; color: var(--primary-red); margin-bottom: 20px; animation: pulse 2s infinite; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     </style>
 </head>
 <body>
 
-    <div class="admin-container">
-        <div class="header">
-            <h1><i class="fa-solid fa-user-shield"></i> P3GAMES Panel Admin Pro</h1>
-        </div>
-
-        <div class="control-box">
-            <div>
-                <h3 style="font-size: 15px;">Status Maintenance Website (`index.html`)</h3>
-                <p style="font-size: 12px; color: var(--text-muted);">Aktifkan untuk menutup akses form mabar depan.</p>
+    <div class="container" id="mainContainer">
+        <div id="pageContent">
+            <div class="header">
+                <h1><i class="fa-solid fa-gamepad"></i> Share ID PSN</h1>
+                <p id="headerDesc">Share ID PSN Kamu & Cari Teman Mabar!</p>
             </div>
-            <button id="maintenanceBtn" class="toggle-btn btn-off" onclick="toggleMaintenance()">OFF</button>
-        </div>
-
-        <div class="add-player-section">
-            <h3 style="font-size: 15px; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-user-plus" style="color:#10b981"></i> Tambah / Daftarkan Player Manual
-            </h3>
-            <form id="adminAddPlayerForm">
-                <div class="form-grid">
-                    <input type="text" id="adminInputNama" placeholder="Nama Player" required maxlength="20">
-                    <input type="text" id="adminInputPsn" placeholder="ID / Username PSN" required maxlength="30">
-                    <button type="submit" class="btn-add-submit">
-                        <i class="fa-solid fa-plus"></i> Tambah Data
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="content-grid">
-            <div>
-                <h2 class="section-title"><i class="fa-solid fa-users"></i> Manajemen Player</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nama</th>
-                                <th>ID PSN</th>
-                                <th>Pangkat / Tag</th>
-                                <th style="text-align: center;">Kontrol Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminPlayerList"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div>
-                <h2 class="section-title"><i class="fa-solid fa-ban"></i> Ruang Banned (Blokir)</h2>
-                <div class="banned-box">
-                    <div id="adminBannedList"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="tagModal" class="modal">
-        <div class="modal-content">
-            <h3><i class="fa-solid fa-tags"></i> Berikan Pangkat / Tag</h3>
-            <input type="hidden" id="targetPlayerKey">
             
-            <label style="font-size:12px; font-weight:600;">Pilih Template Pangkat:</label>
-            <select id="tagTemplate" onchange="handleTemplateChange()">
-                <option value="Member|fa-user|#64748b">Member (Kelabu 👥)</option>
-                <option value="Admin|fa-user-shield|#dc2626">Admin (Merah 👑)</option>
-                <option value="Developer|fa-code|#10b981">Developer (Hijau 🛠️)</option>
-                <option value="custom">-- Buat Tag Custom Sendiri --</option>
-            </select>
-
-            <div id="customTagForm" style="display:none;">
-                <label style="font-size:12px; font-weight:600;">Nama Tag Custom:</label>
-                <input type="text" id="customTagName" placeholder="Contoh: Pro Player">
-                
-                <label style="font-size:12px; font-weight:600;">Icon FontAwesome:</label>
-                <input type="text" id="customTagIcon" placeholder="Contoh: fa-bolt, fa-crown, fa-star">
-                
-                <label style="font-size:12px; font-weight:600;">Warna Badge (Hex):</label>
-                <input type="color" id="customTagColor" value="#3b82f6">
+            <div class="form-section" id="formContainer">
+                <form id="mabarForm">
+                    <div class="input-group">
+                        <input type="text" id="nama" placeholder="Nama Kamu" required maxlength="20">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="psnId" placeholder="ID / Username PSN" required maxlength="30">
+                        <i class="fa-brands fa-playstation"></i>
+                    </div>
+                    <button type="submit" id="btnSubmit"><i class="fa-solid fa-paper-plane"></i> Bagikan ID</button>
+                </form>
             </div>
-
-            <div class="modal-actions">
-                <button class="btn-action" style="background:#cbd5e1; color:#1e293b" onclick="closeTagModal()">Batal</button>
-                <button class="btn-action btn-tag" onclick="savePlayerTag()">Terapkan Tag</button>
+            
+            <div class="list-section">
+                <h2>Daftar Player <span id="totalPlayer">0</span></h2>
+                <div id="playerList"></div>
             </div>
         </div>
     </div>
@@ -154,6 +90,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
+        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDdqcklee7hmqdR2PrMUsxR1M9UD9K5YKQ",
             authDomain: "p3games.firebaseapp.com",
@@ -162,155 +99,123 @@
             appId: "1:695625303781:web:31e4e065ff28f58e28b60c"
         };
 
+        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const playersRef = database.ref('players');
         const systemRef = database.ref('system_status');
 
-        let isMaintenanceActive = false;
+        const mabarForm = document.getElementById('mabarForm');
+        const playerList = document.getElementById('playerList');
+        const totalPlayer = document.getElementById('totalPlayer');
+        const mainContainer = document.getElementById('mainContainer');
+        const formContainer = document.getElementById('formContainer');
+        const pageContent = document.getElementById('pageContent');
 
-        // STATUS MAINTENANCE METER
+        if (localStorage.getItem('hasSubmittedPSN')) { activateFullView(); }
+        function activateFullView() {
+            if(formContainer) formContainer.classList.add('hide-form');
+            mainContainer.classList.add('full-view');
+        }
+
+        // CONTROL MAINTENANCE REALTIME
         systemRef.child('maintenance').on('value', (snapshot) => {
-            const btn = document.getElementById('maintenanceBtn');
-            isMaintenanceActive = snapshot.exists() && snapshot.val() === true;
-            btn.innerText = isMaintenanceActive ? "ON (Maintenance)" : "OFF (Normal)";
-            btn.className = isMaintenanceActive ? "toggle-btn btn-on" : "toggle-btn btn-off";
+            if (snapshot.exists() && snapshot.val() === true) {
+                mainContainer.className = "container";
+                pageContent.innerHTML = `<div class="maintenance-view"><i class="fa-solid fa-screwdriver-wrench"></i><h2>Website Maintenance</h2><p style="color:var(--text-muted); font-size:14px;">Sedang dalam perbaikan komponen mabar. Coba cek nanti ya!</p></div>`;
+            }
         });
 
-        function toggleMaintenance() { systemRef.update({ maintenance: !isMaintenanceActive }); }
+        // ACTION SUBMIT FORM
+        if (mabarForm) {
+            mabarForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const namaInput = document.getElementById('nama').value.trim();
+                const psnIdInput = document.getElementById('psnId').value.trim();
+                const btnSubmit = document.getElementById('btnSubmit');
 
-        // LOGIKA BARU: AKSI TAMBAH PLAYER SECARA MANUAL OLEH ADMIN
-        document.getElementById('adminAddPlayerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const namaInput = document.getElementById('adminInputNama').value.trim();
-            const psnIdInput = document.getElementById('adminInputPsn').value.trim();
+                btnSubmit.innerHTML = 'Memproses...';
+                btnSubmit.disabled = true;
 
-            // Cek duplikasi ID PSN terlebih dahulu agar tertata rapi
-            playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    // Jika data sudah ada, lakukan update nama dan aktifkan statusnya kembali
-                    let keyToUpdate = Object.keys(snapshot.val())[0];
-                    playersRef.child(keyToUpdate).update({
-                        nama: namaInput,
-                        status: 'active',
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    }).then(() => {
-                        alert("ID PSN sudah terdaftar sebelumnya, data berhasil diperbarui oleh Admin!");
-                        document.getElementById('adminAddPlayerForm').reset();
-                    });
-                } else {
-                    // Jika benar-benar baru, tambahkan ke database
-                    playersRef.push({
-                        nama: namaInput,
-                        psnId: psnIdInput,
-                        status: 'active',
-                        tag: { name: 'Member', icon: 'fa-user', color: '#64748b' },
-                        timestamp: firebase.database.ServerValue.TIMESTAMP
-                    }).then(() => {
-                        alert("Player berhasil ditambahkan secara manual!");
-                        document.getElementById('adminAddPlayerForm').reset();
-                    });
-                }
-            });
-        });
+                playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
+                    let isBanned = false;
+                    let existingKey = null;
 
-        // MERENDER PLAYER AKTIF & BANNED
-        playersRef.on('value', (snapshot) => {
-            const tbody = document.getElementById('adminPlayerList');
-            const bannedDiv = document.getElementById('adminBannedList');
-            tbody.innerHTML = '';
-            bannedDiv.innerHTML = '';
-            
-            let hasActive = false;
-            let hasBanned = false;
-
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                Object.keys(data).forEach((key) => {
-                    const player = data[key];
-                    
-                    let tagHtml = `<span class="badge" style="background:#64748b"><i class="fa-solid fa-user"></i> Member</span>`;
-                    if(player.tag) {
-                        tagHtml = `<span class="badge" style="background:${player.tag.color}"><i class="fa-solid ${player.tag.icon}"></i> ${escapeHTML(player.tag.name)}</span>`;
+                    if(snapshot.exists()){
+                        const match = snapshot.val();
+                        existingKey = Object.keys(match)[0];
+                        if(match[existingKey].status === 'banned') isBanned = true;
                     }
 
-                    if (player.status === 'banned') {
-                        hasBanned = true;
-                        const div = document.createElement('div');
-                        div.classList.add('banned-item');
-                        div.innerHTML = `
-                            <span><i class="fa-brands fa-playstation"></i> <b>${escapeHTML(player.psnId)}</b> (${escapeHTML(player.nama)})</span>
-                            <button class="btn-action btn-unban" onclick="setPlayerStatus('${key}', 'active')"><i class="fa-solid fa-circle-check"></i> Unban</button>
-                        `;
-                        bannedDiv.appendChild(div);
+                    if(isBanned) {
+                        alert("ID PSN kamu di-banned admin! Tidak bisa submit, Cok.");
+                        btnSubmit.innerHTML = 'Bagikan ID'; btnSubmit.disabled = false;
+                    } else if (existingKey) {
+                        // Update Data tanpa reset pangkat
+                        database.ref('players/' + existingKey).update({
+                            nama: namaInput,
+                            status: 'active',
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        }).then(() => handleSuccess());
                     } else {
-                        hasActive = true;
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td><b>${escapeHTML(player.nama)}</b></td>
-                            <td><i class="fa-brands fa-playstation" style="color:#003087"></i> ${escapeHTML(player.psnId)}</td>
-                            <td>${tagHtml}</td>
-                            <td style="text-align: center;">
-                                <button class="btn-action btn-tag" onclick="openTagModal('${key}')"><i class="fa-solid fa-tags"></i> Tag</button>
-                                <button class="btn-action btn-banned" onclick="setPlayerStatus('${key}', 'banned')"><i class="fa-solid fa-ban"></i> Ban</button>
-                                <button class="btn-action btn-delete" onclick="deleteUser('${key}')"><i class="fa-solid fa-trash"></i> Hapus</button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
+                        // User Baru otomatis role Member kelabu
+                        playersRef.push({
+                            nama: namaInput,
+                            psnId: psnIdInput,
+                            status: 'active',
+                            tag: { name: 'Member', icon: 'fa-user', color: '#64748b' },
+                            timestamp: firebase.database.ServerValue.TIMESTAMP
+                        }).then(() => handleSuccess());
                     }
                 });
-            }
-            if(!hasActive) tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Tidak ada player aktif.</td></tr>';
-            if(!hasBanned) bannedDiv.innerHTML = '<p style="font-size:12px; color:var(--text-muted); text-align:center;">Belum ada user dibanned.</p>';
-        });
 
-        function setPlayerStatus(key, statusTarget) {
-            const pesan = statusTarget === 'banned' ? "Banned user ini? Dia tidak akan bisa submit lagi." : "Buka blokir user ini?";
-            if(confirm(pesan)) { playersRef.child(key).update({ status: statusTarget }); }
-        }
-
-        function deleteUser(key) {
-            if(confirm("Hapus permanen akun data ini dari database?")) { playersRef.child(key).remove(); }
-        }
-
-        // MODAL HANDLER
-        function openTagModal(key) {
-            document.getElementById('targetPlayerKey').value = key;
-            document.getElementById('tagModal').style.display = 'flex';
-        }
-        function closeTagModal() { document.getElementById('tagModal').style.display = 'none'; }
-        function handleTemplateChange() {
-            const val = document.getElementById('tagTemplate').value;
-            document.getElementById('customTagForm').style.display = val === 'custom' ? 'block' : 'none';
-        }
-
-        function savePlayerTag() {
-            const key = document.getElementById('targetPlayerKey').value;
-            const template = document.getElementById('tagTemplate').value;
-            let tagName, tagIcon, tagColor;
-
-            if(template === 'custom') {
-                tagName = document.getElementById('customTagName').value.trim() || 'Member';
-                tagIcon = document.getElementById('customTagIcon').value.trim() || 'fa-tag';
-                tagColor = document.getElementById('customTagColor').value;
-            } else {
-                const parts = template.split('|');
-                tagName = parts[0];
-                tagIcon = parts[1];
-                tagColor = parts[2];
-            }
-
-            playersRef.child(key).child('tag').set({
-                name: tagName,
-                icon: tagIcon,
-                color: tagColor
-            }).then(() => {
-                closeTagModal();
+                function handleSuccess() {
+                    localStorage.setItem('hasSubmittedPSN', 'true');
+                    activateFullView();
+                }
             });
         }
+
+        // SYNCHRONIZE DATA & SHOW ROLE TAGS AT CLIENT SIDE
+        playersRef.on('value', (snapshot) => {
+            if (!document.getElementById('playerList')) return;
+            playerList.innerHTML = '';
+            
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                const activeList = Object.keys(data)
+                    .map(key => data[key])
+                    .filter(p => p.status !== 'banned')
+                    .sort((a, b) => b.timestamp - a.timestamp);
+                
+                totalPlayer.innerText = activeList.length;
+
+                activeList.forEach((player, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('user-card');
+                    card.style.animationDelay = `${index * 0.03}s`;
+
+                    // Ambil settingan tag dari database admin secara dinamis
+                    let tagHtml = '';
+                    if(player.tag) {
+                        tagHtml = `<span class="user-tag" style="background:${player.tag.color}"><i class="fa-solid ${player.tag.icon}"></i> ${escapeHTML(player.tag.name)}</span>`;
+                    }
+
+                    card.innerHTML = `
+                        <div class="user-info">
+                            <span class="user-name">${escapeHTML(player.nama)} ${tagHtml}</span>
+                            <span class="psn-id"><i class="fa-brands fa-playstation"></i> ${escapeHTML(player.psnId)}</span>
+                        </div>
+                        <i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.2;"></i>
+                    `;
+                    playerList.appendChild(card);
+                });
+            } else {
+                totalPlayer.innerText = '0';
+            }
+        });
 
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
     </script>
 </body>
-    </html>
+</html>
