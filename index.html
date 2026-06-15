@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share ID PSN Mabar</title>
+    <title>P3Games - Share ID PSN Mabar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -17,39 +17,71 @@
             --text-muted: #64748b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: all 0.5s ease; }
-        .container { width: 100%; max-width: 500px; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; border: 2px solid rgba(220, 38, 38, 0.1); transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: all 0.5s ease; position: relative; }
+        
+        .container { width: 100%; max-width: 500px; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; border: 2px solid rgba(220, 38, 38, 0.1); transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
         .container.full-view { max-width: 800px; }
-        .header { background: linear-gradient(135deg, var(--primary-red), #ef4444); color: var(--pure-white); padding: 30px 20px; text-align: center; }
+        
+        /* Hamburger Menu Style */
+        .nav-menu { position: absolute; top: 25px; left: 20px; z-index: 10; display: none; }
+        .nav-menu.show { display: block; }
+        .hamburger-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; box-shadow: none; width: auto; padding: 0; }
+        .hamburger-btn:hover { background: none; transform: none; box-shadow: none; }
+        
+        .sidebar { position: absolute; top: 0; left: -250px; width: 250px; height: 100%; background: #1e293b; z-index: 9; transition: 0.3s ease; padding-top: 80px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+        .sidebar.active { left: 0; }
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 15px 25px; color: #cbd5e1; text-decoration: none; font-size: 15px; font-weight: 600; transition: 0.2s; cursor: pointer; }
+        .sidebar-link:hover, .sidebar-link.active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--primary-red); }
+
+        .header { background: linear-gradient(135deg, var(--primary-red), #ef4444); color: var(--pure-white); padding: 30px 20px 30px 60px; text-align: center; }
         .header h1 { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
         .header p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        
         .form-section { padding: 25px 20px; background: var(--pure-white); border-bottom: 2px solid var(--bg-light); transition: all 0.5s ease; max-height: 300px; opacity: 1; overflow: hidden; }
         .form-section.hide-form { max-height: 0; padding: 0 20px; border-bottom: none; opacity: 0; }
         .input-group { position: relative; margin-bottom: 20px; }
         .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); transition: color 0.3s ease; }
         .input-group input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; transition: all 0.3s ease; }
         .input-group input:focus { border-color: var(--primary-red); }
-        .input-group input:focus + i { color: var(--primary-red); }
+        
         button { width: 100%; padding: 12px; background: var(--primary-red); color: var(--pure-white); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
         button:hover { background: var(--hover-red); transform: translateY(-2px); }
-        .list-section { padding: 25px 20px; max-height: 500px; overflow-y: auto; transition: max-height 0.5s ease; }
-        .container.full-view .list-section { max-height: 70vh; }
+        
+        /* Pages Wrapper */
+        .page { display: none; padding: 25px 20px; }
+        .page.active-page { display: block; }
+        
+        /* Page 1: List Section */
         .list-section h2 { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .list-section h2 span { background: var(--primary-red); color: var(--pure-white); font-size: 12px; padding: 2px 8px; border-radius: 12px; }
         #playerList { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .container.full-view #playerList { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        
         .user-card { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--bg-light); border-left: 4px solid var(--primary-red); border-radius: 8px; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.4s ease forwards; transition: all 0.3s ease; }
-        .user-card:hover { transform: scale(1.03); background: #fff5f5; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08); }
-        .user-info { display: flex; flex-direction: column; gap: 6px; overflow: hidden; width: 100%; }
-        
-        /* Nama dan Flex Layout untuk Role Badge */
+        .user-card:hover { transform: scale(1.03); background: #fff5f5; }
+        .user-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; width: 100%; }
         .user-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; color: var(--text-dark); }
-        
-        /* Desain Badge Role Nyala */
-        .user-tag { font-size: 10px; padding: 3px 8px; color: white; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-transform: uppercase; letter-spacing: 0.5px; }
-        
+        .user-tag { font-size: 10px; padding: 2px 6px; color: white; border-radius: 10px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; text-transform: uppercase; }
         .psn-id { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
         .psn-id i { color: #003087; }
+        
+        /* Page 2: Chat Section Style */
+        .chat-wrapper { display: flex; flex-direction: column; height: 400px; background: var(--bg-light); border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        
+        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+        .msg-received { background: white; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .msg-sent { background: #ffebeb; align-self: flex-end; border-bottom-right-radius: 2px; border-right: 3px solid var(--primary-red); }
+        
+        .msg-sender { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
+        .msg-text { color: #334155; word-break: break-word; }
+        .msg-time { font-size: 9px; color: #94a3b8; align-self: flex-end; margin-top: 2px; }
+        
+        .chat-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #e2e8f0; gap: 8px; }
+        .chat-input-area input { flex: 1; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; }
+        .chat-input-area input:focus { border-color: var(--primary-red); }
+        .chat-send-btn { width: auto; padding: 10px 16px; border-radius: 8px; }
+
         .maintenance-view { text-align: center; padding: 50px 20px; }
         .maintenance-view i { font-size: 60px; color: var(--primary-red); margin-bottom: 20px; animation: pulse 2s infinite; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -58,10 +90,23 @@
 </head>
 <body>
 
+    <div class="nav-menu" id="hamburgerMenu">
+        <button class="hamburger-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-link active" id="linkPlayer" onclick="switchPage('player')">
+            <i class="fa-solid fa-users"></i> Daftar Player
+        </div>
+        <div class="sidebar-link" id="linkChat" onclick="switchPage('chat')">
+            <i class="fa-solid fa-comments"></i> Ruang Chat Mabar
+        </div>
+    </div>
+
     <div class="container" id="mainContainer">
         <div id="pageContent">
             <div class="header">
-                <h1><i class="fa-solid fa-gamepad"></i> Share ID PSN</h1>
+                <h1><i class="fa-solid fa-gamepad"></i> P3GAMES</h1>
                 <p id="headerDesc">Share ID PSN Kamu & Cari Teman Mabar!</p>
             </div>
             
@@ -75,14 +120,27 @@
                         <input type="text" id="psnId" placeholder="ID / Username PSN" required maxlength="30">
                         <i class="fa-brands fa-playstation"></i>
                     </div>
-                    <button type="submit" id="btnSubmit"><i class="fa-solid fa-paper-plane"></i> Bagikan ID</button>
+                    <button type="submit" id="btnSubmit"><i class="fa-solid fa-paper-plane"></i> Bagikan ID & Masuk</button>
                 </form>
             </div>
             
-            <div class="list-section">
+            <div id="playerPage" class="page list-section active-page">
                 <h2>Daftar Player <span id="totalPlayer">0</span></h2>
                 <div id="playerList"></div>
             </div>
+
+            <div id="chatPage" class="page">
+                <h2 style="font-size: 18px; margin-bottom: 15px;"><i class="fa-solid fa-comments"></i> Live Chat Mabar</h2>
+                <div class="chat-wrapper">
+                    <div class="chat-box" id="chatBox">
+                        </div>
+                    <form id="chatForm" class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Ketik pesan mabar..." required maxlength="100" autocomplete="off">
+                        <button type="submit" class="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -90,7 +148,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script>
-        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDdqcklee7hmqdR2PrMUsxR1M9UD9K5YKQ",
             authDomain: "p3games.firebaseapp.com",
@@ -99,10 +156,10 @@
             appId: "1:695625303781:web:31e4e065ff28f58e28b60c"
         };
 
-        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const playersRef = database.ref('players');
+        const chatRef = database.ref('chats');
         const systemRef = database.ref('system_status');
 
         const mabarForm = document.getElementById('mabarForm');
@@ -111,22 +168,64 @@
         const mainContainer = document.getElementById('mainContainer');
         const formContainer = document.getElementById('formContainer');
         const pageContent = document.getElementById('pageContent');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const chatBox = document.getElementById('chatBox');
 
-        if (localStorage.getItem('hasSubmittedPSN')) { activateFullView(); }
+        let currentUserPsn = localStorage.getItem('hasSubmittedPSN');
+        let currentRoleTag = { name: 'Member', icon: 'fa-user', color: '#64748b' };
+        let currentName = "";
+
+        if (currentUserPsn) { 
+            activateFullView(); 
+        }
+
         function activateFullView() {
             if(formContainer) formContainer.classList.add('hide-form');
             mainContainer.classList.add('full-view');
+            hamburgerMenu.classList.add('show'); // Munculkan hamburger menu
+            
+            // Ambil info nama & role pengirim yang aktif
+            if(currentUserPsn) {
+                playersRef.orderByChild('psnId').equalTo(currentUserPsn).once('value', (snap) => {
+                    if(snap.exists()) {
+                        const key = Object.keys(snap.val())[0];
+                        const user = snap.val()[key];
+                        currentName = user.nama;
+                        if(user.tag) currentRoleTag = user.tag;
+                    }
+                });
+            }
         }
 
-        // CONTROL MAINTENANCE REALTIME
+        // HAMBURGER & SIDEBAR KONTROL
+        function toggleSidebar() { sidebar.classList.toggle('active'); }
+        function switchPage(pageName) {
+            sidebar.classList.remove('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            
+            if(pageName === 'player') {
+                document.getElementById('playerPage').classList.add('active-page');
+                document.getElementById('linkPlayer').classList.add('active');
+            } else if(pageName === 'chat') {
+                document.getElementById('chatPage').classList.add('active-page');
+                document.getElementById('linkChat').classList.add('active');
+                chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll bawah
+            }
+        }
+
+        // MAINTENANCE REALTIME CONTROL
         systemRef.child('maintenance').on('value', (snapshot) => {
             if (snapshot.exists() && snapshot.val() === true) {
                 mainContainer.className = "container";
-                pageContent.innerHTML = `<div class="maintenance-view"><i class="fa-solid fa-screwdriver-wrench"></i><h2>Website Maintenance</h2><p style="color:var(--text-muted); font-size:14px;">Sedang dalam perbaikan komponen mabar. Coba cek nanti ya!</p></div>`;
+                hamburgerMenu.classList.remove('show');
+                sidebar.classList.remove('active');
+                pageContent.innerHTML = `<div class="maintenance-view"><i class="fa-solid fa-screwdriver-wrench"></i><h2>Website Maintenance</h2><p style="color:var(--text-muted); font-size:14px;">P3GAMES sedang dalam perbaikan komponen mabar. Coba cek nanti ya, Cok!</p></div>`;
             }
         });
 
-        // ACTION SUBMIT FORM
+        // ACTION SUBMIT FORM AWAL
         if (mabarForm) {
             mabarForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -148,35 +247,35 @@
                     }
 
                     if(isBanned) {
-                        alert("ID PSN kamu di-banned admin! Tidak bisa submit, Cok.");
-                        btnSubmit.innerHTML = 'Bagikan ID'; btnSubmit.disabled = false;
+                        alert("ID PSN kamu di-banned admin! Tidak bisa masuk, Cok.");
+                        btnSubmit.innerHTML = 'Bagikan ID & Masuk'; btnSubmit.disabled = false;
                     } else if (existingKey) {
-                        // Update Data tanpa reset pangkat
                         database.ref('players/' + existingKey).update({
                             nama: namaInput,
                             status: 'active',
                             timestamp: firebase.database.ServerValue.TIMESTAMP
-                        }).then(() => handleSuccess());
+                        }).then(() => handleSuccess(psnIdInput));
                     } else {
-                        // User Baru otomatis role Member kelabu
                         playersRef.push({
                             nama: namaInput,
                             psnId: psnIdInput,
                             status: 'active',
                             tag: { name: 'Member', icon: 'fa-user', color: '#64748b' },
                             timestamp: firebase.database.ServerValue.TIMESTAMP
-                        }).then(() => handleSuccess());
+                        }).then(() => handleSuccess(psnIdInput));
                     }
                 });
 
-                function handleSuccess() {
-                    localStorage.setItem('hasSubmittedPSN', 'true');
+                function handleSuccess(idPsn) {
+                    localStorage.setItem('hasSubmittedPSN', idPsn);
+                    currentUserPsn = idPsn;
                     activateFullView();
+                    switchPage('player');
                 }
             });
         }
 
-        // SYNCHRONIZE DATA & SHOW ROLE TAGS AT CLIENT SIDE
+        // AMBIL DATA PLAYER REAL-TIME
         playersRef.on('value', (snapshot) => {
             if (!document.getElementById('playerList')) return;
             playerList.innerHTML = '';
@@ -195,7 +294,6 @@
                     card.classList.add('user-card');
                     card.style.animationDelay = `${index * 0.03}s`;
 
-                    // Ambil settingan tag dari database admin secara dinamis
                     let tagHtml = '';
                     if(player.tag) {
                         tagHtml = `<span class="user-tag" style="background:${player.tag.color}"><i class="fa-solid ${player.tag.icon}"></i> ${escapeHTML(player.tag.name)}</span>`;
@@ -212,6 +310,57 @@
                 });
             } else {
                 totalPlayer.innerText = '0';
+            }
+        });
+
+        // KONTROL REAL-TIME RUANG CHAT MABAR
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msgInput = document.getElementById('chatInput');
+            const text = msgInput.value.trim();
+            if(!text || !currentUserPsn) return;
+
+            // Dorong data chat terikat dengan Role & ID terkini
+            chatRef.push({
+                psnId: currentUserPsn,
+                nama: currentName || 'Anonymous',
+                message: text,
+                tag: currentRoleTag,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                msgInput.value = '';
+            });
+        });
+
+        chatRef.limitToLast(50).on('value', (snapshot) => {
+            if (!chatBox) return;
+            chatBox.innerHTML = '';
+            
+            if (snapshot.exists()) {
+                snapshot.forEach((child) => {
+                    const chat = child.val();
+                    const isMe = chat.psnId === currentUserPsn;
+                    const msgDiv = document.createElement('div');
+                    msgDiv.classList.add('chat-msg', isMe ? 'msg-sent' : 'msg-received');
+                    
+                    let tagHtml = `<span class="user-tag" style="background:${chat.tag.color}; font-size:8px; padding:1px 4px;"><i class="fa-solid ${chat.tag.icon}"></i> ${escapeHTML(chat.tag.name)}</span>`;
+                    
+                    // Format waktu ringkas jam:menit
+                    const d = new Date(chat.timestamp);
+                    const timeStr = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+
+                    msgDiv.innerHTML = `
+                        <div class="msg-sender" style="color: ${isMe ? 'var(--primary-red)' : '#1e293b'}">
+                            ${escapeHTML(chat.nama)} ${tagHtml}
+                        </div>
+                        <div class="msg-text">${escapeHTML(chat.message)}</div>
+                        <div class="msg-time">${timeStr}</div>
+                    `;
+                    chatBox.appendChild(msgDiv);
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                chatBox.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:20px;">Belum ada obrolan. Yuk sapa duluan!</p>';
             }
         });
 
