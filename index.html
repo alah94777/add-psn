@@ -17,16 +17,14 @@
             --text-muted: #64748b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: all 0.5s ease; position: relative; }
+        body { background-color: var(--bg-light); color: var(--text-dark); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; position: relative; }
         
         .container { width: 100%; max-width: 500px; background: var(--pure-white); border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; border: 2px solid rgba(220, 38, 38, 0.1); transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
         .container.full-view { max-width: 800px; }
         
-        /* Hamburger Menu Style */
         .nav-menu { position: absolute; top: 25px; left: 20px; z-index: 10; display: none; }
         .nav-menu.show { display: block; }
-        .hamburger-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; box-shadow: none; width: auto; padding: 0; }
-        .hamburger-btn:hover { background: none; transform: none; box-shadow: none; }
+        .hamburger-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
         
         .sidebar { position: absolute; top: 0; left: -250px; width: 250px; height: 100%; background: #1e293b; z-index: 9; transition: 0.3s ease; padding-top: 80px; box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
         .sidebar.active { left: 0; }
@@ -40,18 +38,16 @@
         .form-section { padding: 25px 20px; background: var(--pure-white); border-bottom: 2px solid var(--bg-light); transition: all 0.5s ease; max-height: 300px; opacity: 1; overflow: hidden; }
         .form-section.hide-form { max-height: 0; padding: 0 20px; border-bottom: none; opacity: 0; }
         .input-group { position: relative; margin-bottom: 20px; }
-        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); transition: color 0.3s ease; }
-        .input-group input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; transition: all 0.3s ease; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .input-group input { width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; }
         .input-group input:focus { border-color: var(--primary-red); }
         
         button { width: 100%; padding: 12px; background: var(--primary-red); color: var(--pure-white); border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
         button:hover { background: var(--hover-red); transform: translateY(-2px); }
         
-        /* Pages Wrapper */
         .page { display: none; padding: 25px 20px; }
         .page.active-page { display: block; }
         
-        /* Page 1: List Section */
         .list-section h2 { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .list-section h2 span { background: var(--primary-red); color: var(--pure-white); font-size: 12px; padding: 2px 8px; border-radius: 12px; }
         #playerList { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -65,17 +61,26 @@
         .psn-id { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
         .psn-id i { color: #003087; }
         
-        /* Page 2: Chat Section Style */
         .chat-wrapper { display: flex; flex-direction: column; height: 400px; background: var(--bg-light); border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
         .chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         
-        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.4; display: flex; flex-direction: column; position: relative; }
         .msg-received { background: white; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .msg-sent { background: #ffebeb; align-self: flex-end; border-bottom-right-radius: 2px; border-right: 3px solid var(--primary-red); }
         
-        .msg-sender { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
+        .msg-header-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 2px; }
+        .msg-sender { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 5px; }
         .msg-text { color: #334155; word-break: break-word; }
-        .msg-time { font-size: 9px; color: #94a3b8; align-self: flex-end; margin-top: 2px; }
+        
+        /* Gaya Teks Pesan Dihapus */
+        .msg-deleted { color: #94a3b8; font-style: italic; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+        
+        .msg-footer-row { display: flex; justify-content: flex-end; align-items: center; gap: 6px; margin-top: 2px; }
+        .msg-time { font-size: 9px; color: #94a3b8; }
+        
+        /* Tombol Hapus Sampah Kecil */
+        .btn-chat-del { background: none; border: none; color: #cbd5e1; font-size: 11px; cursor: pointer; padding: 2px; width: auto; box-shadow: none; }
+        .btn-chat-del:hover { color: #ef4444; transform: none; }
         
         .chat-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #e2e8f0; gap: 8px; }
         .chat-input-area input { flex: 1; padding: 10px 15px; border: 2px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; }
@@ -85,7 +90,6 @@
         .maintenance-view { text-align: center; padding: 50px 20px; }
         .maintenance-view i { font-size: 60px; color: var(--primary-red); margin-bottom: 20px; animation: pulse 2s infinite; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     </style>
 </head>
 <body>
@@ -95,12 +99,8 @@
     </div>
 
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-link active" id="linkPlayer" onclick="switchPage('player')">
-            <i class="fa-solid fa-users"></i> Daftar Player
-        </div>
-        <div class="sidebar-link" id="linkChat" onclick="switchPage('chat')">
-            <i class="fa-solid fa-comments"></i> Ruang Chat Mabar
-        </div>
+        <div class="sidebar-link active" id="linkPlayer" onclick="switchPage('player')"><i class="fa-solid fa-users"></i> Daftar Player</div>
+        <div class="sidebar-link" id="linkChat" onclick="switchPage('chat')"><i class="fa-solid fa-comments"></i> Ruang Chat Mabar</div>
     </div>
 
     <div class="container" id="mainContainer">
@@ -132,15 +132,13 @@
             <div id="chatPage" class="page">
                 <h2 style="font-size: 18px; margin-bottom: 15px;"><i class="fa-solid fa-comments"></i> Live Chat Mabar</h2>
                 <div class="chat-wrapper">
-                    <div class="chat-box" id="chatBox">
-                        </div>
+                    <div class="chat-box" id="chatBox"></div>
                     <form id="chatForm" class="chat-input-area">
                         <input type="text" id="chatInput" placeholder="Ketik pesan mabar..." required maxlength="100" autocomplete="off">
                         <button type="submit" class="chat-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -173,32 +171,29 @@
         const chatBox = document.getElementById('chatBox');
 
         let currentUserPsn = localStorage.getItem('hasSubmittedPSN');
-        let currentRoleTag = { name: 'Member', icon: 'fa-user', color: '#64748b' };
-        let currentName = "";
+        let currentRoleTag = { name: 'Member', icon: 'fa-user', color: '#64748b', xp: 10 };
+        let currentName = localStorage.getItem('mySubmittedName') || "";
 
-        if (currentUserPsn) { 
-            activateFullView(); 
-        }
+        if (currentUserPsn) { activateFullView(); }
 
         function activateFullView() {
             if(formContainer) formContainer.classList.add('hide-form');
             mainContainer.classList.add('full-view');
-            hamburgerMenu.classList.add('show'); // Munculkan hamburger menu
+            hamburgerMenu.classList.add('show');
             
-            // Ambil info nama & role pengirim yang aktif
             if(currentUserPsn) {
-                playersRef.orderByChild('psnId').equalTo(currentUserPsn).once('value', (snap) => {
+                playersRef.orderByChild('psnId').equalTo(currentUserPsn).on('value', (snap) => {
                     if(snap.exists()) {
                         const key = Object.keys(snap.val())[0];
                         const user = snap.val()[key];
                         currentName = user.nama;
+                        localStorage.setItem('mySubmittedName', currentName);
                         if(user.tag) currentRoleTag = user.tag;
                     }
                 });
             }
         }
 
-        // HAMBURGER & SIDEBAR KONTROL
         function toggleSidebar() { sidebar.classList.toggle('active'); }
         function switchPage(pageName) {
             sidebar.classList.remove('active');
@@ -211,21 +206,19 @@
             } else if(pageName === 'chat') {
                 document.getElementById('chatPage').classList.add('active-page');
                 document.getElementById('linkChat').classList.add('active');
-                chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll bawah
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
 
-        // MAINTENANCE REALTIME CONTROL
         systemRef.child('maintenance').on('value', (snapshot) => {
             if (snapshot.exists() && snapshot.val() === true) {
                 mainContainer.className = "container";
                 hamburgerMenu.classList.remove('show');
                 sidebar.classList.remove('active');
-                pageContent.innerHTML = `<div class="maintenance-view"><i class="fa-solid fa-screwdriver-wrench"></i><h2>Website Maintenance</h2><p style="color:var(--text-muted); font-size:14px;">P3GAMES sedang dalam perbaikan komponen mabar. Coba cek nanti ya, Cok!</p></div>`;
+                pageContent.innerHTML = `<div class="maintenance-view"><i class="fa-solid fa-screwdriver-wrench"></i><h2>Website Maintenance</h2><p>P3GAMES sedang dalam perbaikan komponen mabar, Cok!</p></div>`;
             }
         });
 
-        // ACTION SUBMIT FORM AWAL
         if (mabarForm) {
             mabarForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -233,12 +226,10 @@
                 const psnIdInput = document.getElementById('psnId').value.trim();
                 const btnSubmit = document.getElementById('btnSubmit');
 
-                btnSubmit.innerHTML = 'Memproses...';
-                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = 'Memproses...'; btnSubmit.disabled = true;
 
                 playersRef.orderByChild('psnId').equalTo(psnIdInput).once('value', (snapshot) => {
-                    let isBanned = false;
-                    let existingKey = null;
+                    let isBanned = false; let existingKey = null;
 
                     if(snapshot.exists()){
                         const match = snapshot.val();
@@ -247,122 +238,163 @@
                     }
 
                     if(isBanned) {
-                        alert("ID PSN kamu di-banned admin! Tidak bisa masuk, Cok.");
+                        alert("ID PSN kamu di-banned admin!");
                         btnSubmit.innerHTML = 'Bagikan ID & Masuk'; btnSubmit.disabled = false;
                     } else if (existingKey) {
                         database.ref('players/' + existingKey).update({
                             nama: namaInput,
                             status: 'active',
                             timestamp: firebase.database.ServerValue.TIMESTAMP
-                        }).then(() => handleSuccess(psnIdInput));
+                        }).then(() => handleSuccess(psnIdInput, namaInput));
                     } else {
                         playersRef.push({
                             nama: namaInput,
                             psnId: psnIdInput,
                             status: 'active',
-                            tag: { name: 'Member', icon: 'fa-user', color: '#64748b' },
+                            tag: { name: 'Member', icon: 'fa-user', color: '#64748b', xp: 10 },
                             timestamp: firebase.database.ServerValue.TIMESTAMP
-                        }).then(() => handleSuccess(psnIdInput));
+                        }).then(() => handleSuccess(psnIdInput, namaInput));
                     }
                 });
 
-                function handleSuccess(idPsn) {
+                function handleSuccess(idPsn, namaReal) {
                     localStorage.setItem('hasSubmittedPSN', idPsn);
-                    currentUserPsn = idPsn;
-                    activateFullView();
-                    switchPage('player');
+                    localStorage.setItem('mySubmittedName', namaReal);
+                    currentUserPsn = idPsn; currentName = namaReal;
+                    activateFullView(); switchPage('player');
                 }
             });
         }
 
-        // AMBIL DATA PLAYER REAL-TIME
         playersRef.on('value', (snapshot) => {
             if (!document.getElementById('playerList')) return;
             playerList.innerHTML = '';
-            
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 const activeList = Object.keys(data)
                     .map(key => data[key])
                     .filter(p => p.status !== 'banned')
-                    .sort((a, b) => b.timestamp - a.timestamp);
-                
+                    .sort((a, b) => {
+                        const xpA = (a.tag && a.tag.xp) ? parseInt(a.tag.xp) : 10;
+                        const xpB = (b.tag && b.tag.xp) ? parseInt(b.tag.xp) : 10;
+                        return xpB - xpA; 
+                    });
                 totalPlayer.innerText = activeList.length;
-
                 activeList.forEach((player, index) => {
                     const card = document.createElement('div');
                     card.classList.add('user-card');
                     card.style.animationDelay = `${index * 0.03}s`;
-
                     let tagHtml = '';
                     if(player.tag) {
                         tagHtml = `<span class="user-tag" style="background:${player.tag.color}"><i class="fa-solid ${player.tag.icon}"></i> ${escapeHTML(player.tag.name)}</span>`;
                     }
-
-                    card.innerHTML = `
-                        <div class="user-info">
-                            <span class="user-name">${escapeHTML(player.nama)} ${tagHtml}</span>
-                            <span class="psn-id"><i class="fa-brands fa-playstation"></i> ${escapeHTML(player.psnId)}</span>
-                        </div>
-                        <i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.2;"></i>
-                    `;
+                    card.innerHTML = `<div class="user-info"><span class="user-name">${escapeHTML(player.nama)} ${tagHtml}</span><span class="psn-id"><i class="fa-brands fa-playstation"></i> ${escapeHTML(player.psnId)}</span></div><i class="fa-solid fa-gamepad" style="color: var(--primary-red); opacity: 0.2;"></i>`;
                     playerList.appendChild(card);
                 });
-            } else {
-                totalPlayer.innerText = '0';
-            }
+            } else { totalPlayer.innerText = '0'; }
         });
 
-        // KONTROL REAL-TIME RUANG CHAT MABAR
+        // ACTION SUBMIT PESAN CHAT
         document.getElementById('chatForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const msgInput = document.getElementById('chatInput');
             const text = msgInput.value.trim();
             if(!text || !currentUserPsn) return;
 
-            // Dorong data chat terikat dengan Role & ID terkini
             chatRef.push({
                 psnId: currentUserPsn,
-                nama: currentName || 'Anonymous',
+                nama: currentName || 'Player',
                 message: text,
                 tag: currentRoleTag,
+                status: 'active', // status chat awal
                 timestamp: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => {
-                msgInput.value = '';
-            });
+            }).then(() => { msgInput.value = ''; });
         });
 
+        // TAMPILAN LIVE CHAT + MODERASI HAPUS CHAT
         chatRef.limitToLast(50).on('value', (snapshot) => {
-            if (!chatBox) return;
-            chatBox.innerHTML = '';
+            if (!chatBox) return; chatBox.innerHTML = '';
             
             if (snapshot.exists()) {
                 snapshot.forEach((child) => {
+                    const chatId = child.key;
                     const chat = child.val();
                     const isMe = chat.psnId === currentUserPsn;
                     const msgDiv = document.createElement('div');
                     msgDiv.classList.add('chat-msg', isMe ? 'msg-sent' : 'msg-received');
                     
-                    let tagHtml = `<span class="user-tag" style="background:${chat.tag.color}; font-size:8px; padding:1px 4px;"><i class="fa-solid ${chat.tag.icon}"></i> ${escapeHTML(chat.tag.name)}</span>`;
-                    
-                    // Format waktu ringkas jam:menit
                     const d = new Date(chat.timestamp);
                     const timeStr = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
 
-                    msgDiv.innerHTML = `
-                        <div class="msg-sender" style="color: ${isMe ? 'var(--primary-red)' : '#1e293b'}">
-                            ${escapeHTML(chat.nama)} ${tagHtml}
-                        </div>
-                        <div class="msg-text">${escapeHTML(chat.message)}</div>
-                        <div class="msg-time">${timeStr}</div>
-                    `;
+                    // 1. KONDISI SUDAH DIHAPUS
+                    if (chat.status === 'deleted') {
+                        let textHapus = "Pesan ini telah dihapus oleh pengguna";
+                        if (chat.deletedBy === 'admin') textHapus = "Pesan ini telah dihapus oleh admin";
+                        if (chat.deletedBy === 'dev') textHapus = "Pesan ini telah dihapus oleh developer";
+
+                        msgDiv.innerHTML = `
+                            <div class="msg-deleted"><i class="fa-solid fa-ban"></i> ${textHapus}</div>
+                            <div class="msg-footer-row"><span class="msg-time">${timeStr}</span></div>
+                        `;
+                    } 
+                    // 2. KONDISI PESAN AKTIF (BELUM DIHAPUS)
+                    else {
+                        let tagHtml = '';
+                        if(chat.tag) {
+                            tagHtml = `<span class="user-tag" style="background:${chat.tag.color}; font-size:8px; padding:1px 4px;"><i class="fa-solid ${chat.tag.icon}"></i> ${escapeHTML(chat.tag.name)}</span>`;
+                        }
+
+                        // VALIDASI HIERARKI AKSES TOMBOL HAPUS (XP REQUIREMENT)
+                        let targetXp = (chat.tag && chat.tag.xp) ? parseInt(chat.tag.xp) : 10;
+                        let myXp = currentRoleTag.xp ? parseInt(currentRoleTag.xp) : 10;
+                        
+                        let canDelete = false;
+                        if (isMe) {
+                            canDelete = true; // Member/siapapun bisa hapus chat sendiri
+                        } else if (myXp === 100) {
+                            canDelete = true; // Dev bisa hapus chat siapa saja
+                        } else if (myXp === 90 && targetXp < 100) {
+                            canDelete = true; // Admin hanya bisa hapus jika target di bawah Dev (< 100)
+                        }
+
+                        let deleteBtnHtml = canDelete ? `<button class="btn-chat-del" onclick="requestDeleteChat('${chatId}', '${chat.psnId}', ${targetXp})" title="Hapus Pesan"><i class="fa-solid fa-trash"></i></button>` : '';
+
+                        msgDiv.innerHTML = `
+                            <div class="msg-header-row">
+                                <div class="msg-sender" style="color: ${isMe ? 'var(--primary-red)' : '#1e293b'}">
+                                    ${escapeHTML(chat.nama)} ${tagHtml}
+                                </div>
+                                ${deleteBtnHtml}
+                            </div>
+                            <div class="msg-text">${escapeHTML(chat.message)}</div>
+                            <div class="msg-footer-row"><span class="msg-time">${timeStr}</span></div>
+                        `;
+                    }
                     chatBox.appendChild(msgDiv);
                 });
                 chatBox.scrollTop = chatBox.scrollHeight;
             } else {
-                chatBox.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:20px;">Belum ada obrolan. Yuk sapa duluan!</p>';
+                chatBox.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:20px;">Belum ada obrolan.</p>';
             }
         });
+
+        // LOGIKA KLIK HAPUS CHAT DI SISI CLIENT
+        function requestDeleteChat(chatId, senderPsn, targetXp) {
+            if(!confirm("Kamu yakin ingin menghapus pesan ini?")) return;
+
+            let myXp = currentRoleTag.xp ? parseInt(currentRoleTag.xp) : 10;
+            let deletedByRole = "user"; // default menghapus diri sendiri
+
+            if (currentUserPsn !== senderPsn) {
+                if (myXp === 100) deletedByRole = "dev";
+                else if (myXp === 90) deletedByRole = "admin";
+            }
+
+            database.ref('chats/' + chatId).update({
+                status: 'deleted',
+                deletedBy: deletedByRole
+            });
+        }
 
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)); }
     </script>
